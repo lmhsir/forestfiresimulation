@@ -8,12 +8,14 @@ f_array = np.pad(f_array, pad_width=1, mode='constant', constant_values=' ')
 
 w_and_h = w_and_h_before_padding+2
 
-f_array[np.random.randint(1, w_and_h-1), np.random.randint(1,w_and_h-1)] = "#"
-
 
 adjacent_trees = ((-1,-1), (-1,0), (-1,1),
                   (0,-1),          (0, 1),
                   (1,-1),  (1,0),  (1,1))
+
+regen_rate = 0.01
+spread_rate = 0.8
+spont_combust_rate = 0.4
 
 
 def update_forest(old_array):
@@ -21,19 +23,24 @@ def update_forest(old_array):
     for x in range(w_and_h):
         for y in range(w_and_h):
             if old_array[x, y] == ' ':
-                new_array[x, y] = ' '
+                if 0 < x < 9 and 0 < y < 9:
+                    if np.random.random() <= regen_rate:
+                        new_array[x, y] = 'T'
+                else:
+                    new_array[x, y] = ' '
+
             elif old_array[x, y] == '#':
                 new_array[x, y] = ' '
             elif old_array[x, y] == "T":
                 for xb, yb in adjacent_trees:
                     if old_array[x+xb, y+yb] == '#':
-                        if np.random.random() <= 0.7:
+                        if np.random.random() <= spread_rate:
                             new_array[x, y] = '#'
                         else:
                             new_array[x, y] = 'T'
                         break
                     else:
-                        if np.random.random() <= 0.3:
+                        if np.random.random() <= spont_combust_rate:
                             new_array[x, y] = '#'
                         else:
                             new_array[x, y] = 'T'
