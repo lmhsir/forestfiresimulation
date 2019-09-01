@@ -1,5 +1,9 @@
 import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib import animation
+from matplotlib import colors
 import time
+import os
 
 w_and_h_before_padding = 8  # width and height of the square array
 forest = [["T" for x in range(w_and_h_before_padding)] for y in range(w_and_h_before_padding)]
@@ -13,7 +17,7 @@ adjacent_trees = ((-1,-1), (-1,0), (-1,1),
                   (0,-1),          (0, 1),
                   (1,-1),  (1,0),  (1,1))
 
-regen_rate = 0.01
+regen_rate = 0.1
 spread_rate = 0.8
 spont_combust_rate = 0.4
 
@@ -83,14 +87,13 @@ print(f_array)
 print("\n")
 
 prog_start = time.time()
-delay = 0.5
+delay = 0.2
 while trees_remain:
     if time.time() >= prog_start + delay:
         f_dictionary = update_forest(f_array)
         blank_array = generate_empty_array(w_and_h)
         f_array = fill_array(f_dictionary, blank_array)
         end_when_empty(f_array)
-
         print(f_array)
         print("\n")
-        delay += 0.5
+        delay += 0.2
