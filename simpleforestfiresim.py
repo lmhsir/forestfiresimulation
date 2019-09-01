@@ -1,12 +1,10 @@
 import numpy as np
 import time
 
-w_and_h_before_padding = 8  # width and height of the square array
-forest = [["T" for x in range(w_and_h_before_padding)] for y in range(w_and_h_before_padding)]
+w_and_h = 10  # width and height of the square array
+forest = [["T" for x in range(w_and_h-2)] for y in range(w_and_h-2)]
 f_array = np.array(forest)
 f_array = np.pad(f_array, pad_width=1, mode='constant', constant_values=' ')
-
-w_and_h = w_and_h_before_padding+2
 
 
 adjacent_trees = ((-1,-1), (-1,0), (-1,1),
@@ -24,7 +22,7 @@ def update_forest(old_array):
     for x in range(w_and_h):
         for y in range(w_and_h):
             if old_array[x, y] == ' ':
-                if 0 < x < 9 and 0 < y < 9:
+                if 0 < x < w_and_h-1 and 0 < y < w_and_h-1:  # if cell part of forest (and not the padding)
                     if np.random.random() <= regen_rate:
                         new_array[x, y] = 'T'
                 else:
