@@ -17,13 +17,14 @@ adjacent_trees = ((-1,-1), (-1,0), (-1,1),
                   (0,-1),          (0, 1),
                   (1,-1),  (1,0),  (1,1))
 
-regen_rate = 0.1
+regen_rate = 0.05
 spread_rate = 0.8
-spont_combust_rate = 0.4
+spont_combust_rate = 0.01
 
 
 def update_forest(old_array):
-    new_array = {}
+    new_list = [[' ' for x in range(w_and_h)] for y in range(w_and_h)]
+    new_array = np.array(new_list)
     for x in range(w_and_h):
         for y in range(w_and_h):
             if old_array[x, y] == ' ':
@@ -32,7 +33,6 @@ def update_forest(old_array):
                         new_array[x, y] = 'T'
                 else:
                     new_array[x, y] = ' '
-
             elif old_array[x, y] == '#':
                 new_array[x, y] = ' '
             elif old_array[x, y] == "T":
@@ -49,23 +49,6 @@ def update_forest(old_array):
                         else:
                             new_array[x, y] = 'T'
     return new_array
-
-
-def generate_empty_array(length):
-    empty_list = []
-    for i in range(length):
-        row = []
-        for i in range(length):
-            row.append(" ")
-        empty_list.append(row)
-    empty_array = np.array(empty_list)
-    return empty_array
-
-
-def fill_array(dictionary, empty_array):
-    for key, value in dictionary.items():
-        empty_array[key] = value
-    return empty_array
 
 
 def end_when_empty(array):
@@ -87,13 +70,11 @@ print(f_array)
 print("\n")
 
 prog_start = time.time()
-delay = 0.2
+delay = 0.1
 while trees_remain:
     if time.time() >= prog_start + delay:
-        f_dictionary = update_forest(f_array)
-        blank_array = generate_empty_array(w_and_h)
-        f_array = fill_array(f_dictionary, blank_array)
+        f_array = update_forest(f_array)
         end_when_empty(f_array)
         print(f_array)
         print("\n")
-        delay += 0.2
+        delay += 0.1
