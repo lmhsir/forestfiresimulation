@@ -91,5 +91,5 @@ plt.show()  # shows the animated figure
 
 # To output the animation as a gif:
 # Download ImageMagick and add the line: anim.save('/.../.../.../forestfire.gif', writer='imagemagick', fps=20)
-# Set the number of frames= for FuncAnimation()
+# Set the number of frames= in FuncAnimation()
 # Make sure the FuncAnimation() time interval= is coherent with the fps= of .save()
