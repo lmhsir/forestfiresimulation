@@ -6,13 +6,10 @@ from matplotlib import colors
 Empty, Tree, Fire = 0, 1, 2  # This increases the readability of our code
 
 # ---Generate forest array---
-w_and_h_before_padding = 98  # width and height of the forest
-forest = np.ones((w_and_h_before_padding, w_and_h_before_padding))  # generates a grid of Trees cells
+w_and_h = 50  # width and height of the forest + padding
+forest = np.ones((w_and_h-2, w_and_h-2))  # generates a grid of Trees cells.
 f_array = np.array(forest)
-f_array = np.pad(f_array, pad_width=1, mode='constant', constant_values=0)  # adds a boarder of Empty cells
-
-w_and_h = w_and_h_before_padding+2  # width and height of forest + padding
-
+f_array = np.pad(f_array, pad_width=1, mode='constant', constant_values=0)  # adds a padding of Empty cells
 
 # ---Neighbourhood of a cell---
 adjacent_cells = ((-1,-1), (-1,0), (-1,1),
@@ -20,9 +17,9 @@ adjacent_cells = ((-1,-1), (-1,0), (-1,1),
                    (1,-1),  (1,0),  (1,1))
 
 # ---Probabilities---
-regen_rate = 0.08
+regen_rate = 0.01
 spread_rate = 0.9
-spont_combust_rate = 0.00008
+spont_combust_rate = 0.0001
 
 # ---Update forest function---
 # Rules:
@@ -33,13 +30,15 @@ spont_combust_rate = 0.00008
 # Any Fire cell will become an Empty cell
 # Any Empty cell has a regen_rate probability of becoming a Tree cell
 
+w_and_h_min1 = w_and_h-1
+
 
 def update_forest(f_array):  # iterates through each cell in the f_array and updates the cell according to the Rules
     new_array = np.zeros((w_and_h, w_and_h))
     for x in range(w_and_h):
         for y in range(w_and_h):
             if f_array[x, y] == Empty:
-                if 0 < x < 99 and 0 < y < 99:  # if current cell part of forest (and not the padding)
+                if 0 < x < w_and_h_min1 and 0 < y < w_and_h_min1:  # if cell part of forest (and not the padding)
                     if np.random.random() <= regen_rate:
                         new_array[x, y] = Tree
                 else:
@@ -89,3 +88,8 @@ anim = animation.FuncAnimation(fig=fig, func=animate, interval=interval)  # make
                                                                           # animate() function
 
 plt.show()  # shows the animated figure
+
+# To output the animation as a gif:
+# Download ImageMagick and add the line: anim.save('/.../.../.../forestfire.gif', writer='imagemagick', fps=20)
+# Set the number of frames= for FuncAnimation()
+# Make sure the FuncAnimation() time interval= is coherent with the fps= of .save()
