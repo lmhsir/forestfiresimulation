@@ -60,13 +60,12 @@ def end_when_empty(array):
         quit()
 
 
-trees_remain = True
-
 print(f_array)
 print("\n")
 
 prog_start = time.time()
 delay = 0.2
+trees_remain = True
 while trees_remain:
     if time.time() >= prog_start + delay:
         f_array = update_forest(f_array)
